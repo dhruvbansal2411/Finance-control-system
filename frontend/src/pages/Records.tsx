@@ -84,7 +84,7 @@ export default function Records() {
   const resetForm = () => {
     setFormData({
       amount: '',
-      type: 'income',
+      type: 'income' as TransactionType,
       category: '',
       date: new Date().toISOString().split('T')[0],
       description: ''

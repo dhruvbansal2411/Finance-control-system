@@ -1,12 +1,12 @@
 [build]
-  # Build command - runs from the frontend directory
-  command = "cd frontend && npm install && npm run build"
+  # Base directory - tells Netlify where the frontend code is
+  base = "frontend"
   
-  # Publish directory - where the built files are located
-  publish = "frontend/dist"
+  # Build command - runs from the base directory
+  command = "npm install && npm run build"
   
-  # Base directory (optional, but helps Netlify understand the structure)
-  base = "/"
+  # Publish directory - relative to base directory
+  publish = "dist"
 
 # Redirect all routes to index.html for React Router
 [[redirects]]
@@ -17,4 +17,3 @@
 # Environment variables
 [build.environment]
   NODE_VERSION = "18"
-  NPM_FLAGS = "--legacy-peer-deps"
