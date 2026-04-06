@@ -1,12 +1,38 @@
 # Finance Data Processing and Access Control System
 
+## Quick Start
+
+### Windows Users
+```bash
+start-dev.bat
+```
+
+### Mac/Linux Users
+```bash
+chmod +x start-dev.sh
+./start-dev.sh
+```
+
+Or manually:
+
+```bash
+# Terminal 1 - Backend
+npm run dev
+
+# Terminal 2 - Frontend
+cd frontend
+npm run dev
+```
+
+Then open http://localhost:5173 in your browser.
+
 A complete full-stack application for managing financial records with role-based access control.
 
 ## 🎯 Quick Access
 
 - **Frontend**: http://localhost:5173 (React Dashboard)
 - **Backend API**: http://localhost:3000 (REST API)
-- **Full Stack Guide**: See [FULLSTACK_GUIDE.md](FULLSTACK_GUIDE.md)
+- **Health Check**: http://localhost:3000/health
 
 ## Tech Stack
 

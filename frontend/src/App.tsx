@@ -6,7 +6,6 @@ import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import Records from './pages/Records'
 import Users from './pages/Users'
-import Profile from './pages/Profile'
 import Layout from './components/Layout'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
@@ -32,7 +31,6 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="records" element={<Records />} />
             <Route path="users" element={<Users />} />
-            <Route path="profile" element={<Profile />} />
           </Route>
         </Routes>
       </BrowserRouter>

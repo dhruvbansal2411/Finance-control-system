@@ -26,12 +26,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const login = async (email: string, password: string) => {
+    console.log('AuthContext: Logging in user:', email)
     const response = await api.post('/auth/login', { email, password })
     const { token, user } = response.data
+    
+    console.log('AuthContext: Login response received')
+    console.log('AuthContext: User data:', user)
+    console.log('AuthContext: User role:', user.role)
     
     localStorage.setItem('token', token)
     localStorage.setItem('user', JSON.stringify(user))
     setUser(user)
+    
+    console.log('AuthContext: User state updated')
   }
 
   const logout = () => {

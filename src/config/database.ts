@@ -127,8 +127,14 @@ export const prepare = (sql: string) => {
         // Save database after successful operation
         saveDatabase();
         
-      } catch (error) {
+      } catch (error: any) {
         console.error('Database operation error:', error);
+        // Re-throw with proper error information
+        if (error.message && error.message.includes('UNIQUE constraint failed')) {
+          const err = new Error('UNIQUE constraint failed');
+          (err as any).code = 'SQLITE_CONSTRAINT';
+          throw err;
+        }
         throw error;
       }
       

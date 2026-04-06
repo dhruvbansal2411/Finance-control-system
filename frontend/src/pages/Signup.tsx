@@ -35,21 +35,31 @@ export default function Signup() {
     setLoading(true)
 
     try {
+      console.log('Attempting signup with:', formData.email, 'Role:', formData.role)
       // Register the user
-      await api.post('/auth/register', {
+      const registerResponse = await api.post('/auth/register', {
         name: formData.name,
         email: formData.email,
         password: formData.password,
         role: formData.role
       })
+      console.log('Registration successful:', registerResponse.data)
       
       // Automatically login after successful registration
+      console.log('Auto-logging in...')
       await login(formData.email, formData.password)
+      
+      // Wait a bit to ensure state is updated
+      await new Promise(resolve => setTimeout(resolve, 100))
+      
+      console.log('Login successful, navigating to dashboard')
       
       // Redirect to dashboard
       navigate('/')
     } catch (err: any) {
-      setError(err.response?.data?.error || err.response?.data?.errors?.[0]?.msg || 'Signup failed')
+      console.error('Signup error:', err)
+      console.error('Error response:', err.response?.data)
+      setError(err.response?.data?.error || err.response?.data?.errors?.[0]?.msg || 'Signup failed. Please try again.')
     } finally {
       setLoading(false)
     }

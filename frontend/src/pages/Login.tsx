@@ -17,10 +17,14 @@ export default function Login() {
     setLoading(true)
 
     try {
+      console.log('Attempting login with:', email)
       await login(email, password)
+      console.log('Login successful, navigating to dashboard')
       navigate('/')
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed')
+      console.error('Login error:', err)
+      console.error('Error response:', err.response?.data)
+      setError(err.response?.data?.error || 'Login failed. Please check your credentials.')
     } finally {
       setLoading(false)
     }

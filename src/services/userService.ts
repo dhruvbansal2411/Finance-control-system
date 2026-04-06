@@ -5,25 +5,38 @@ import { User, UserRole, UserStatus } from '../types';
 
 export class UserService {
   async createUser(email: string, password: string, name: string, role: UserRole): Promise<Omit<User, 'password'>> {
+    // Check if user already exists
+    const existingUser = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    if (existingUser) {
+      throw new Error('Email already registered');
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    const result = db.prepare(`
-      INSERT INTO users (email, password, name, role)
-      VALUES (?, ?, ?, ?)
-    `).run(email, hashedPassword, name, role);
-    
-    console.log('Insert result:', result);
-    
-    if (!result.lastInsertRowid || result.lastInsertRowid === 0) {
-      // Fallback: get user by email
-      const user = db.prepare('SELECT id, email, name, role, status, createdAt FROM users WHERE email = ?').get(email);
-      if (user) {
-        return user as any as Omit<User, 'password'>;
+    try {
+      const result = db.prepare(`
+        INSERT INTO users (email, password, name, role)
+        VALUES (?, ?, ?, ?)
+      `).run(email, hashedPassword, name, role);
+      
+      console.log('Insert result:', result);
+      
+      if (!result.lastInsertRowid || result.lastInsertRowid === 0) {
+        // Fallback: get user by email
+        const user = db.prepare('SELECT id, email, name, role, status, createdAt FROM users WHERE email = ?').get(email);
+        if (user) {
+          return user as any as Omit<User, 'password'>;
+        }
+        throw new Error('Failed to create user');
       }
-      throw new Error('Failed to create user');
+      
+      return this.getUserById(result.lastInsertRowid as number);
+    } catch (error: any) {
+      if (error.message?.includes('UNIQUE constraint failed')) {
+        throw new Error('Email already registered');
+      }
+      throw error;
     }
-    
-    return this.getUserById(result.lastInsertRowid as number);
   }
 
   async login(email: string, password: string): Promise<{ token: string; user: Omit<User, 'password'> }> {
