@@ -40,7 +40,7 @@ export class UserService {
   }
 
   async login(email: string, password: string): Promise<{ token: string; user: Omit<User, 'password'> }> {
-    const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email) as User | undefined;
+    const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email) as any;
     
     if (!user) {
       throw new Error('Invalid credentials');

@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 export enum UserRole {
   VIEWER = 'viewer',
   ANALYST = 'analyst',
@@ -36,7 +38,7 @@ export interface FinancialRecord {
   updatedAt: string;
 }
 
-export interface AuthRequest extends Express.Request {
+export interface AuthRequest extends Request {
   user?: {
     id: number;
     role: UserRole;
